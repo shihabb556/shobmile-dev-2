@@ -144,7 +144,7 @@ const Auth = () => {
           {isLogin ? (
             <>
               <div className="flex gap-2 items-center justify-center">
-                <p>Don't have an account?</p>
+                <p>Don&apos;t have an account?</p>
                 <button
                   onClick={() => setIsLogin(false)}
                   className="text-blue-700 hover:underline"

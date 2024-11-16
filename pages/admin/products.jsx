@@ -53,7 +53,7 @@ useEffect(() => {
 useEffect(() => {
   setLoadedProducts([]); // Reset loadedProducts
   dispatch(setCurrentPage(1)); // Reset currentPage to 1
-}, [searchTerm, minPrice, maxPrice, selectedCategory, sortOption, dispatch]);
+}, [loading,searchTerm, minPrice, maxPrice, selectedCategory, sortOption, dispatch]);
 
 // Debounced function to load more products
 const debouncedLoadMore = debounce(() => {

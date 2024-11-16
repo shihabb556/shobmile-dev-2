@@ -1,4 +1,9 @@
-export const BASE_URL = "http://localhost:8000/api/v1"; // Replace with your actual API URL
+
+export const BASE_URL  = 'https://shobmile-dev-1-server.vercel.app/api/v1'
+
+//for dev
+// export const BASE_URL = "http://localhost:8000/api/v1";
+
 
 // Centralized function to make API requests
 export const apiRequest = async (endpoint, method = "GET", data = null, token = null) => {
