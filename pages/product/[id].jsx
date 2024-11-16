@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom'; // assuming you're using React Router
+import { useRouter } from 'next/router';  // Import useRouter from next/router
 import { useDispatch, useSelector } from 'react-redux';
 import { addToCart } from '../../redux/cartSlice'; // Importing the cart action
-import { fetchProductById } from '../../redux/productSlice'; // Assuming you have a redux slice for fetching single product
-import { Link } from 'react-router-dom'; // For navigation
+import { fetchProductById } from '../../redux/productSlice'; // Assuming you have a redux slice for fetching a single product
+import Link from 'next/link'; // Use next/link for navigation in Next.js
 
 const SingleProduct = () => {
-  const { productId } = useParams(); // Extract product ID from the URL
+  const router = useRouter();  // Initialize useRouter
+  const { productId } = router.query;  // Get productId from the URL query params
+
   const dispatch = useDispatch();
 
   // Fetch product from Redux store
@@ -14,7 +16,9 @@ const SingleProduct = () => {
 
   // Fetch the product on page load
   useEffect(() => {
-    dispatch(fetchProductById(productId)); // Action to fetch product by ID
+    if (productId) {
+      dispatch(fetchProductById(productId)); // Action to fetch product by ID
+    }
   }, [dispatch, productId]);
 
   // Loading and error handling
@@ -67,18 +71,19 @@ const SingleProduct = () => {
       <div className="mt-8">
         <h3 className="text-2xl font-bold mb-4">Related Products</h3>
         {/* Related products will go here. You can fetch them based on category or tags */}
-        {/* Assuming `relatedProducts` is available in your state */}
         <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6">
           {product.relatedProducts?.map((relatedProduct) => (
             <div key={relatedProduct.id} className="p-4 border rounded-lg">
-              <Link to={`/products/${relatedProduct.id}`}>
-                <img
-                  src={relatedProduct.image}
-                  alt={relatedProduct.name}
-                  className="w-full h-auto mb-4 rounded-lg"
-                />
-                <h4 className="text-lg font-semibold">{relatedProduct.name}</h4>
-                <p className="text-gray-700">${relatedProduct.price}</p>
+              <Link href={`/products/${relatedProduct.id}`}>
+                <a>
+                  <img
+                    src={relatedProduct.image}
+                    alt={relatedProduct.name}
+                    className="w-full h-auto mb-4 rounded-lg"
+                  />
+                  <h4 className="text-lg font-semibold">{relatedProduct.name}</h4>
+                  <p className="text-gray-700">${relatedProduct.price}</p>
+                </a>
               </Link>
             </div>
           ))}
@@ -87,11 +92,10 @@ const SingleProduct = () => {
       
       {/* Back to Products List */}
       <div className="mt-8">
-        <Link
-          to="/products"
-          className="text-blue-500 hover:underline"
-        >
-          &larr; Back to Products
+        <Link href="/products">
+          <a className="text-blue-500 hover:underline">
+            &larr; Back to Products
+          </a>
         </Link>
       </div>
     </div>
