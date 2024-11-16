@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom'; // assuming you're using React Router
 import { useDispatch, useSelector } from 'react-redux';
-import { addToCart } from '../redux/cartSlice'; // Importing the cart action
-import { fetchProductById } from '../redux/productSlice'; // Assuming you have a redux slice for fetching single product
+import { addToCart } from '../../redux/cartSlice'; // Importing the cart action
+import { fetchProductById } from '../../redux/productSlice'; // Assuming you have a redux slice for fetching single product
 import { Link } from 'react-router-dom'; // For navigation
 
 const SingleProduct = () => {
