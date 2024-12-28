@@ -135,7 +135,7 @@ const CartPage = () => {
 
       {/* Cart Items Section */}
       <div className="mb-4 mt-10">
-        <h3 className="text-lg font-semibold">Your Basket Items</h3>
+        <h3 className="text-lg font-semibold">Your Cart Items</h3>
         {cartItems.length > 0 ? (
           <div>
             <div className="overflow-y-auto max-h-[50vh] p-5 bg-gray-100">

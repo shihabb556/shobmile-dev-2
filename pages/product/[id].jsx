@@ -1,38 +1,44 @@
-import React, { useEffect, useState } from 'react';
-import { useRouter } from 'next/router';  // Import useRouter from next/router
+import React, { useEffect } from 'react';
+import { useRouter } from 'next/router'; // Import useRouter from next/router
 import { useDispatch, useSelector } from 'react-redux';
 import { addToCart } from '../../redux/cartSlice'; // Importing the cart action
-import { fetchProductById } from '../../redux/productSlice'; // Assuming you have a redux slice for fetching a single product
-import Link from 'next/link'; // Use next/link for navigation in Next.js
+import { fetchSingleProduct } from '@/redux/productSlice';
+import Link from 'next/link';
 
 const SingleProduct = () => {
-  const router = useRouter();  // Initialize useRouter
-  const { productId } = router.query;  // Get productId from the URL query params
-
+  const router = useRouter(); // Initialize useRouter
+  const { id } = router.query; // Get id from the URL query params
   const dispatch = useDispatch();
-
+    
+  console.log('id',id)
   // Fetch product from Redux store
-  const { product, status, error } = useSelector((state) => state.product); // Assuming your Redux state is structured this way
+  const { singleProduct, loading, error } = useSelector((state) => state.products);
 
-  // Fetch the product on page load
+  // Fetch the product when id is available
   useEffect(() => {
-    if (productId) {
-      dispatch(fetchProductById(productId)); // Action to fetch product by ID
+    if (id) {
+      dispatch(fetchSingleProduct(id));
     }
-  }, [dispatch, productId]);
-
-  // Loading and error handling
-  if (status === 'loading') {
-    return <div>Loading...</div>;
-  }
-  if (status === 'failed') {
-    return <div>Error: {error}</div>;
-  }
+  }, [id, dispatch]);
 
   // Add to cart handler
   const handleAddToCart = () => {
-    dispatch(addToCart(product)); // Dispatch action to add the product to the cart
+    if (singleProduct) {
+      dispatch(addToCart(singleProduct)); // Pass the product to add to the cart
+    }
   };
+
+  // Loading and error handling
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+  if (error) {
+    return <div>Error: {error}</div>;
+  }
+
+  if (!singleProduct) {
+    return <div>Product not found</div>;
+  }
 
   return (
     <div className="container mx-auto my-6 p-4">
@@ -41,61 +47,44 @@ const SingleProduct = () => {
         {/* Product Image */}
         <div className="w-full lg:w-1/2 p-4">
           <img
-            src={product.image}
-            alt={product.name}
-            className="w-full h-auto rounded-lg shadow-lg"
+            src={singleProduct.images[0]}
+            alt={singleProduct.name}
+            className="w-full h-[18em] lg:h-[24em] object-cover rounded-lg shadow-lg"
           />
         </div>
-        
+
         {/* Product Info */}
         <div className="w-full lg:w-1/2 p-4">
-          <h2 className="text-3xl font-bold mb-4">{product.name}</h2>
-          <p className="text-lg mb-4">Price: ${product.price}</p>
-          <p className="mb-6 text-gray-700">
-            {/* Placeholder for product description */}
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce tincidunt
-            magna vel orci aliquet, ut vehicula justo suscipit.
-          </p>
-          
-          {/* Add to Cart Button */}
-          <button
-            onClick={handleAddToCart}
-            className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition duration-300"
-          >
-            Add to Cart
-          </button>
+          <h2 className="text-3xl font-bold mb-4">{singleProduct.name}</h2>
+          <p className="text-lg mb-4">Price: TK {singleProduct.price}</p>
+
+            {/* Add to Cart Button */}
+          <div className='flex gap-4'>
+            <button
+              className="bg-green-600 text-white py-2 px-4 rounded hover:bg-green-500 transition duration-300"
+            >
+             Buy Now
+            </button>
+            <button
+              onClick={handleAddToCart}
+              className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition duration-300"
+            >
+              Add to Cart
+            </button>
+
+          </div>
+
+          <h3 className='mt-4 font-bold'>Description:</h3>
+          <p className="ml-2 mb-6 text-gray-700">{singleProduct.description}</p>
+
+        
         </div>
       </div>
-      
-      {/* Related Products Section */}
-      <div className="mt-8">
-        <h3 className="text-2xl font-bold mb-4">Related Products</h3>
-        {/* Related products will go here. You can fetch them based on category or tags */}
-        <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6">
-          {product.relatedProducts?.map((relatedProduct) => (
-            <div key={relatedProduct.id} className="p-4 border rounded-lg">
-              <Link href={`/products/${relatedProduct.id}`}>
-                <a>
-                  <img
-                    src={relatedProduct.image}
-                    alt={relatedProduct.name}
-                    className="w-full h-auto mb-4 rounded-lg"
-                  />
-                  <h4 className="text-lg font-semibold">{relatedProduct.name}</h4>
-                  <p className="text-gray-700">${relatedProduct.price}</p>
-                </a>
-              </Link>
-            </div>
-          ))}
-        </div>
-      </div>
-      
+
       {/* Back to Products List */}
-      <div className="mt-8">
-        <Link href="/products">
-          <a className="text-blue-500 hover:underline">
-            &larr; Back to Products
-          </a>
+      <div className="my-8 ">
+        <Link href="/">
+          <p className="text-blue-500 hover:underline">&larr; Back to Products</p>
         </Link>
       </div>
     </div>

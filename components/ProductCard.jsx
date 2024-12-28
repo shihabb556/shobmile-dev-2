@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { addToCart } from '@/redux/cartSlice';
 import { toast } from 'sonner';
+import Link from 'next/link';
 
 const ProductCard = ({ product }) => {
   const [hovered, setHovered] = useState(false);
@@ -45,14 +46,14 @@ const ProductCard = ({ product }) => {
       onHoverStart={() => setHovered(true)}
       onHoverEnd={() => setHovered(false)}
     >
-      <div className="w-full h-[6.7rem] sm:h-[10rem] relative mb-4 overflow-hidden">
+      <div className="w-full h-[8.7rem] sm:h-[13rem] relative mb-4 overflow-hidden">
         <motion.div
           className="w-full h-full"
           animate={{ scale: hovered ? 1.05 : 1 }} // Scale the image slightly
           transition={{ duration: 0.1 }}
         >
          <Image
-           src={product?.images?.[0] || '/images/default_image.jepg'}  // Fallback to a default image
+           src={product?.images?.[0] || '/images/default_image.jpeg'}  // Fallback to a default image
            alt={product?.name || 'Product Image'}  // Fallback for alt text
            layout="fill"
            objectFit="cover"
@@ -61,7 +62,7 @@ const ProductCard = ({ product }) => {
         </motion.div>
       </div>
 
-      <h3 className="text-lg font-medium text-gray-900">{product.name}</h3>
+      <Link href={`/product/${product?._id}`} className="text-lg font-medium text-gray-900">{product.name}</Link>
 
       <div className="mt-2 text-blue-600 font-bold flex gap-2">
       
@@ -92,10 +93,10 @@ const ProductCard = ({ product }) => {
       {/* Add to Cart button with event handler */}
       <button
         onClick={handleAddToCart}
-        className="mt-4 px-3 py-2 mb-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition duration-200 ease-in-out hover:scale-[1.1]"
+        className="mt-4 p-1 px-2 mb-2 bg-blue-600 text-white rounded hover:bg-blue-500   ease-in-out hover:scale-[1] scale-[1.1]"
 
       >
-        Add to Busket
+        Add to  Cart
       </button>
     </motion.div>
   );

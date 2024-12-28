@@ -4,8 +4,6 @@ import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { addToCart } from '@/redux/cartSlice';
 import { toast } from 'sonner';
-import { DeleteIcon, PenBoxIcon } from 'lucide-react';
-import TooltipButton from '../shared/TooltipButton';
 
 const ProductList = ({ product }) => {
   const [hovered, setHovered] = useState(false);
@@ -41,20 +39,20 @@ const ProductList = ({ product }) => {
 
   return (
     <motion.div
-      className={` mt-10 1 flex flex-col items-center relative bg-white  rounded-lg shadow-md transition-transform duration-300 ease-in-out ${
+      className={`mt-1 flex flex-col items-center relative bg-white rounded-lg shadow-md transition-transform duration-300 ease-in-out pb-2 ${
         hovered ? ' shadow-lg ' : ''
       }`}
       onHoverStart={() => setHovered(true)}
       onHoverEnd={() => setHovered(false)}
     >
-      <div className="w-full h-[6.7em] sm:h-[10rem] relative mb-4 overflow-hidden">
+      <div className="w-full h-[6.7rem] sm:h-[10rem] relative mb-4 overflow-hidden">
         <motion.div
           className="w-full h-full"
           animate={{ scale: hovered ? 1.05 : 1 }} // Scale the image slightly
           transition={{ duration: 0.1 }}
         >
          <Image
-           src={product?.images?.[0] || '/images/default_image.jepg'}  // Fallback to a default image
+           src={product?.images?.[0] || '/images/default_image.jpeg'}  // Fallback to a default image
            alt={product?.name || 'Product Image'}  // Fallback for alt text
            layout="fill"
            objectFit="cover"
@@ -91,20 +89,18 @@ const ProductList = ({ product }) => {
         </div>
       )}
 
-      {/* Edit Product and delete  button with event handler */}
-     <div className="flex space-x-4 py-2">
-        <TooltipButton
-          label="Edit"
-          tooltip="Edit this item"
-          buttonClassName="bg-green-500 hover:bg-green-600" // Custom button styles
-          tooltipClassName="bg-gray-800" // Custom tooltip styles
-        />
-        <TooltipButton
-          label="Delete"
-          tooltip="Delete this item"
-          buttonClassName="bg-red-500 hover:bg-red-600" // Custom button styles
-          tooltipClassName="bg-gray-800" // Custom tooltip styles
-        />
+      {/* Edit , Delete button with event handler */}
+      <div className='flex gap-5'>
+        <button
+          className="mt-4 px-3 py-2 mb-2 bg-green-600 text-white rounded hover:bg-green-700 transition duration-200 ease-in-out hover:scale-[1.1]"
+        >
+          Edit
+        </button>
+        <button
+          className="mt-4 px-3 py-2 mb-2 bg-red-600 text-white rounded hover:bg-red-700 transition duration-200 ease-in-out hover:scale-[1.1]"
+        >
+         Delete
+        </button>
       </div>
     </motion.div>
   );

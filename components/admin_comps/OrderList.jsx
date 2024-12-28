@@ -26,7 +26,7 @@ const OrderList = ({ orders, handleUpdateStatus, handleDeleteOrder }) => {
               </button>
             </div>
 
-            <p className="mt-2 text-gray-600">Total Amount: <span className="font-semibold">${order.totalAmount}</span></p>
+            <p className="mt-2 text-gray-600">Total Amount: <span className="font-semibold">TK {order.totalAmount}</span></p>
             <p className="text-gray-600">Status: <span className="font-semibold">{order.orderStatus}</span></p>
 
             {expandedOrders[order._id] && (

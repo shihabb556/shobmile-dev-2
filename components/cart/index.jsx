@@ -28,7 +28,7 @@ const Cart = () => {
     <div className="fixed inset-0 z-[1800] ">
       <div className="fixed inset-0 bg-black opacity-50" onClick={()=> dispatch(closeCart())}></div>
       <div className="z-[1900] fixed right-0 min-h-screen bg-gray-100 w-[60vw] md:w-[50vw] lg:w-[40vw] p-4 shadow-lg overflow-y-auto  max-h-[90vh] ">
-        <h2 className="text-2xl font-bold mb-4 text-gray-700">Your Busket</h2>
+        <h2 className="text-2xl font-bold mb-4 text-gray-700">Your Cart</h2>
         {cartItems.length > 0 ? (
           <>
             <div className='relative'>
@@ -47,7 +47,7 @@ const Cart = () => {
           </>
         ) : (
          <div className='flex flex-col gap-5'>
-           <div className="text-gray-600">Your busket is empty</div>
+           <div className="text-gray-600">Your cart is empty</div>
            <Link onClick={()=>dispatch(closeCart())} href="/" className='flex  gap-2 justify-center items-center text-center mt-10 bg-blue-500 p-2 rounded'>
               Shop Now
              <ShoppingBasket/>

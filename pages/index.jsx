@@ -5,18 +5,32 @@ import FilterSidebar from "@/components/filters";
 import { useSelector, useDispatch } from "react-redux";
 import { fetchProducts, setCurrentPage } from "@/redux/productSlice"; 
 import { setSearchTerm, setPriceRange, resetFilters, setCategory } from "@/redux/filterSlice"; 
-import { FilterIcon, FilterXIcon, Menu, Search } from "lucide-react";
+import { Menu, Search } from "lucide-react";
 import Footer from "@/components/shared/Footer";
+import { useRouter } from 'next/router';
 
 const Products = () => {
   const dispatch = useDispatch();
-  const { products, totalPages, currentPage } = useSelector((state) => state.products);
+  const router = useRouter();
+  const {  totalPages, currentPage } = useSelector((state) => state.products);
   const { searchTerm, minPrice, maxPrice, selectedCategory, sortOption } = useSelector((state) => state.filter);
   const { categories } = useSelector((state) => state.category);
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [loadedProducts, setLoadedProducts] = useState([]);
   const [loading, setLoading] = useState(false); // Loading state
   const [tempSearchTerm,setTempSearchTerm] = useState('');
+  const { admin } = useSelector((state) => state?.admin || {});
+
+  const token = admin?.token || null;
+  const user = admin?.user || {};
+
+
+  useEffect(() => {
+    if( token && user?.role === 'admin'){
+      router.push('/admin/products');
+    };
+  }, [router]);
+
 
   // Fetch products whenever filters or the current page changes
   // Fetch products whenever filters or the current page changes
@@ -37,9 +51,9 @@ const Products = () => {
 
         // Set the loadedProducts based on the current page
         if (currentPage === 1) {
-          setLoadedProducts(result.products);
+          setLoadedProducts(result?.products);
         } else {
-          setLoadedProducts((prevProducts) => [...prevProducts, ...result.products]);
+          setLoadedProducts((prevProducts) => [...prevProducts, ...result?.products]);
         }
 
         setLoading(false); // Reset loading to false after fetching
@@ -144,31 +158,31 @@ const Products = () => {
 
         {/* Selected Category Display */}
         {selectedCategory && (
-          <button className=" mt-2 mb-3  text-gray-700 rounded transition">
-          Category: {selectedCategory} <span onClick={handleResetFilter} className="bg-gray-300 text-red-500 ml-3 px-2 py-1 rounded-full">X</span>
+          <button className=" mt-5 ml-2 mb-3  text-gray-700 rounded transition">
+         <span className="font-bold"> Category:</span> {selectedCategory} <span onClick={handleResetFilter} className="bg-gray-300 text-red-500 ml-3 px-2 py-1 rounded-full">X</span>
           </button>
         )}
 
         <div className="grid px-2 grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-5">
-          {loadedProducts && loadedProducts?.length > 0 ? (
+          
+        {loadedProducts && loadedProducts?.length > 0 && (
             loadedProducts?.map((product) => (
               <ProductCard key={product._id} product={product} />
             ))
-          ) : (
-            <div className="col-span-1 sm:col-span-2 md:col-span-3 lg:col-span-4 text-center p-4 text-gray-500">
-              No products available
-            </div>
-          )}
-        </div>
+          ) }
+          
+        
+        </div> 
+        <div className="col-span-1 sm:col-span-2 md:col-span-3 lg:col-span-4 text-center p-4 text-gray-500">
+          { loading &&  <button className="block mx-auto  my-[5em]  text-xl text-blue-700">Loading..</button>  }
+          { !loading && loadedProducts.length == 0 && 'Products not available' }
+        </div>     
+
 
         {loadedProducts && totalPages > currentPage && (
-        
-            loading ? <button className="block mx-auto  my-[5em]  text-xl text-blue-700">Loading..</button> : (
-                <button onClick={handleLoadMore} className="block mx-auto my-[5em]  px-4 py-2 bg-green-600 text-white rounded text-xl">
-                  Load more
-                </button>
-              )
-            
+            <button onClick={handleLoadMore} className="block mx-auto my-[5em]  px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded text-xl">
+              Load more
+            </button>            
         )}
       </div>
 

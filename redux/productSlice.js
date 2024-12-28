@@ -46,7 +46,8 @@ export const fetchSingleProduct = createAsyncThunk(
   async (id, { rejectWithValue }) => {
     try {
       const result = await apiRequest(`/products/${id}`, 'GET');
-      return result.product;
+      console.log('in fetch single slice,',result)
+      return result;
     } catch (err) {
       return rejectWithValue(err.message);
     }

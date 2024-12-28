@@ -45,8 +45,8 @@ export default function UploadImages({uploadedImageUrls, setUploadedImageUrls}) 
         accept="image/*"
         multiple
       />
-      <button onClick={uploadImages} disabled={loading || images.length === 0}>
-        {loading ? 'Uploading...' : 'Upload Images'}
+      <button className='bg-green-700 text-gray-100 p-1 rounded' onClick={uploadImages} disabled={loading || images.length === 0}>
+        {loading ? 'Uploading...' : 'Upload Image'}
       </button>
 
       <h2>Preview</h2>

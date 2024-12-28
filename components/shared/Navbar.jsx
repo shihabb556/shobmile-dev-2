@@ -10,8 +10,8 @@ const Navbar = () => {
  
   const dispatch = useDispatch();
   const router = useRouter();
-  const {  totalQuantity, isCartOpen} = useSelector((state)=> state.cart);  
-  const {  token } = useSelector((state)=> state.auth); 
+  const { totalQuantity, isCartOpen} = useSelector((state)=> state.cart);  
+  const { token } = useSelector((state)=> state.auth); 
 
 
    useEffect(() => {
@@ -29,7 +29,7 @@ const Navbar = () => {
   }, [isCartOpen]);
 
   const isAdminRoute = /^\/admin/.test(router.pathname);
-  console.log(token)
+  console.log('token',token)
 
   return (
     <nav className={` md:sticky md:bg-gray-800 text-white shadow-lg fixed top-[-4em] md:top-0 w-full z-[1000] ${ isAdminRoute ? 'hidden' : 'block'}`}>
